@@ -22,7 +22,7 @@ module Bot
 
       def user_embed(user)
         e = Discordrb::Webhooks::Embed.new(
-          title: '[View Profile]',
+          author: { name: 'View Profile', icon_url: 'http://vignette2.wikia.nocookie.net/fantendo/images/1/12/Osu!_logo.png' },
           url: user.profile_url,
           footer: { text: "osu-api v#{Osu::VERSION}" },
           timestamp: Time.now,
@@ -35,7 +35,6 @@ module Bot
           value: <<~data
             **PP Rank:** #{user.pp_rank} (`#{user.pp_raw.round(2)}`) / **Country (#{user.country}):** #{user.pp_country_rank}
             **SS** `x#{user.count_rank[:ss]}` / **S** `x#{user.count_rank[:s]}` / **A** `x#{user.count_rank[:a]}`
-            **Level #{user.level.round(2)}**
           data
         )
 
@@ -52,8 +51,8 @@ module Bot
           name: 'Score',
           inline: true,
           value: <<~data
-            **Total:** #{user.total_score}
-            **Ranked:** #{user.ranked_score}
+            **Level #{user.level.round(2)}**
+            **Total:** #{user.total_score} / **Ranked:** #{user.ranked_score}
           data
         )
 
