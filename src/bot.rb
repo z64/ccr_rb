@@ -2,7 +2,7 @@
 require 'bundler/setup'
 require 'discordrb'
 require 'yaml'
-require 'osu/api'
+require 'osu-api'
 
 # The main bot module.
 module Bot
@@ -11,6 +11,9 @@ module Bot
 
   # Bot configuration
   CONFIG = OpenStruct.new YAML.load_file 'data/config.yaml'
+
+  # REST interface for Osu!
+  OSU = Osu::Client.new CONFIG.osu_token
 
   # Create the bot.
   # The bot is created as a constant, so that you
