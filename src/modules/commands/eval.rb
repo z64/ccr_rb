@@ -17,6 +17,10 @@ module Bot
               name: 'An error occurred!',
               icon_url: 'http://emojipedia-us.s3.amazonaws.com/cache/f4/63/f463408675b9437b457915713b9af46c.png'
             }
+            e.add_field(
+              name: 'Backtrace',
+              value: "```#{error.backtrace.join("\n")}```"
+            )
           end
         end
       end
