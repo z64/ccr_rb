@@ -13,3 +13,6 @@ owner:
 
 # game the bot is playing
 game: osu!
+
+# Token for making calls to Osu! REST API
+osu_token:
