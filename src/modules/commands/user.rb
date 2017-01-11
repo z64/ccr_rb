@@ -11,7 +11,7 @@ module Bot
               min_args: 1) do |event, *name|
         name = name.join ' '
         user = OSU.user name
-        next 'user not found' unless user
+        next '`user not found`' unless user
         event.channel.send_embed(
           "`user info:` **#{user.name}**",
           user_embed(user)
