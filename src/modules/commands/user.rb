@@ -31,7 +31,6 @@ module Bot
 
         e.add_field(
           name: 'Ranks',
-          inline: true,
           value: <<~data
             **PP Rank:** #{user.pp_rank} (`#{user.pp_raw.round(2)}`) / **Country (#{user.country}):** #{user.pp_country_rank}
             **SS** `x#{user.count_rank[:ss]}` / **S** `x#{user.count_rank[:s]}` / **A** `x#{user.count_rank[:a]}`
@@ -40,7 +39,6 @@ module Bot
 
         e.add_field(
           name: 'Hits',
-          inline: true,
           value: <<~data
             **Accuracy:** `#{user.accuracy.round(2)}%`
             300 `x#{user.count300}` / 100 `x#{user.count100}` / 50 `x#{user.count50}`
@@ -49,7 +47,6 @@ module Bot
 
         e.add_field(
           name: 'Score',
-          inline: true,
           value: <<~data
             **Level #{user.level.round(2)}**
             **Total:** #{user.total_score} / **Ranked:** #{user.ranked_score}
