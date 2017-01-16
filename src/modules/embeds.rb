@@ -9,14 +9,19 @@ end
 
 module Bot
   module Embeds
+    # the Osu! logo
+    OSU_ICON = 'http://vignette2.wikia.nocookie.net/fantendo/images/1/12/Osu!_logo.png'
+    VERSION_FOOTER = Discordrb::Webhooks::EmbedFooter.new text: "osu-api v#{Osu::VERSION}"
+    STAR_EMOJI = "\u2B50"
+
     module_function
 
     # Embed for a Osu::User
     def user_embed(user)
       e = Discordrb::Webhooks::Embed.new(
-        author: { name: 'View Profile', icon_url: 'http://vignette2.wikia.nocookie.net/fantendo/images/1/12/Osu!_logo.png' },
+        author: { name: 'View Profile', icon_url: OSU_ICON },
         url: user.profile_url,
-        footer: { text: "osu-api v#{Osu::VERSION}" },
+        footer: VERSION_FOOTER,
         timestamp: Time.now,
         color: 0xFF69B4
       )
@@ -57,6 +62,54 @@ module Bot
           value: events.join("\n")
         )
       end
+
+      e
+    end
+
+    def beatmap_embed(beatmap)
+      e = Discordrb::Webhooks::Embed.new(
+        author: { name: 'View Beatmap', icon_url: OSU_ICON },
+        url: beatmap.url,
+        footer: VERSION_FOOTER,
+        timestamp: Time.now,
+        color: 0xFF69B4,
+        description: <<~data
+          Mapped by: **#{beatmap.creator}** `[#{beatmap.mode} | #{beatmap.approval}]`
+        data
+      )
+
+      e.add_field(
+        name: 'Difficulty',
+        inline: true,
+        value: <<~data
+          Overall: **#{beatmap.difficulty[:overall]}**
+          Star Difficulty: **#{beatmap.difficulty[:rating].round(2)}**
+          Circle Size: **#{beatmap.difficulty[:size]}**
+          HP Drain: **#{beatmap.difficulty[:drain]}**
+          Approach Rate: **#{beatmap.difficulty[:approach]}**
+        data
+      )
+
+      total_length = Time.at(beatmap.total_length).strftime "%M:%S"
+      hit_length = Time.at(beatmap.hit_length).strftime "%M:%S"
+
+      e.add_field(
+        name: 'Stats',
+        inline: true,
+        value: <<~data
+          Length: `#{total_length}` (`#{hit_length}` drain) @ **#{beatmap.bpm} BPM**
+          Max Combo: **#{beatmap.max_combo}**
+          Pass Count: **#{beatmap.pass_count.to_cspv} / #{beatmap.play_count.to_cspv}** (#{(beatmap.pass_count.to_f / beatmap.play_count.to_f).round(2)}%)
+          Favorited by **#{beatmap.favourite_count.to_cspv}** players
+        data
+      )
+
+      # if beatmap.tags
+      #  e.add_field(
+      #    name: 'Tags',
+      #    value: beatmap.tags.split(' ').map { |t| "`#{t}`" }.join(' ')
+      #  )
+      # end
 
       e
     end
