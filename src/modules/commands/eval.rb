@@ -8,7 +8,11 @@ module Bot
       command(:eval, help_available: false) do |event, *code|
         break unless event.user.id == CONFIG.owner
         begin
-          eval code.join(' ')
+          result = eval code.join(' ')
+          event.channel.send_embed do |e|
+            e.description = result.to_s
+            e.color = 0x00ff00
+          end
         rescue => error
           event.channel.send_embed do |e|
             e.color = 0xff0000
