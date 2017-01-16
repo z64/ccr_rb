@@ -97,7 +97,7 @@ module Bot
         name: 'Stats',
         inline: true,
         value: <<~data
-          Length: `#{total_length}` (`#{hit_length}` drain) @ **#{beatmap.bpm} BPM**
+          Length: `#{total_length}` (`#{hit_length}` drain) @ #{beatmap.bpm} BPM
           Max Combo: **#{beatmap.max_combo}**
           Pass Count: **#{beatmap.pass_count.to_cspv} / #{beatmap.play_count.to_cspv}** (#{(beatmap.pass_count.to_f / beatmap.play_count.to_f).round(2)}%)
           Favorited by **#{beatmap.favourite_count.to_cspv}** players
