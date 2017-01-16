@@ -53,7 +53,7 @@ module Bot
       if user.events.any?
         events = user.events.map do |ev|
           html = ev.display_html
-          html.gsub!(/\/b\/\d+/) { |m| "#{Osu::API::BASE_URL}/#{m}" }
+          html.gsub!('/b/', "#{Osu::API::BASE_URL}/b/")
           html.gsub! user.name, "▫️️`#{ev.date}`"
           Upmark.convert html
         end
