@@ -1,5 +1,12 @@
 require 'upmark'
 
+# We extend Integer for pretty-printing large numbers
+class Integer
+  def to_cspv
+    self.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse
+  end
+end
+
 module Bot
   module Embeds
     module_function
