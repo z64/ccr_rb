@@ -37,7 +37,7 @@ module Bot
         next unless beatmap
 
         event.channel.send_embed(
-          "`beatmap info:` **#{beatmap.artist} - #{beatmap.title}**",
+          "`beatmap info:` **#{beatmap.artist} - #{beatmap.title}** (#{beatmap.version})",
           Embeds.beatmap_embed(beatmap)
         )
       end
