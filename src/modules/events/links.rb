@@ -14,7 +14,6 @@ module Bot
 
       # Player profile link
       message(contains: LINKS[:user]) do |event|
-        puts 'user link posted'
         urls = URI.extract event.message.content
         id = extract_id urls.find { |u| LINKS[:user] =~ u }
 
@@ -28,12 +27,12 @@ module Bot
         )
       end
 
-      # Player profile link
+      # Beatmap link
       message(contains: LINKS[:beatmap]) do |event|
         puts 'beatmap link posted'
       end
 
-      # Player profile link
+      # Beatmap set link
       message(contains: LINKS[:beatmap_set]) do |event|
         puts 'beatmap_set link posted'
       end
