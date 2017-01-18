@@ -3,7 +3,7 @@ module Bot
     module User
       extend Discordrb::Commands::CommandContainer
 
-      command(:user,
+      command([:user, :u],
               description: 'shows you information about a user',
               usage: 'ccr.user [standard, ctb, taiko, mania] username',
               min_args: 1) do |event, maybe_mode, *name|
