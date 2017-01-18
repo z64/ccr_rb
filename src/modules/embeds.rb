@@ -60,7 +60,7 @@ module Bot
         end
         e.add_field(
           name: 'Events',
-          value: events.join("\n")
+          value: events.take(3).join("\n")
         )
       end
 
