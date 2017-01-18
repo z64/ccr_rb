@@ -3,14 +3,13 @@ module Bot
     module User
       extend Discordrb::Commands::CommandContainer
 
-      command([:user, :u],
+      command(Osu::API::MODE,
               description: 'shows you information about a user',
               usage: 'ccr.user [standard, ctb, taiko, mania] username',
-              min_args: 1) do |event, maybe_mode, *name|
+              min_args: 1) do |event, *name|
         name = name.join ' '
-        mode = maybe_mode.to_sym
-        user   = OSU.user name, mode.to_sym if Osu::API::MODE.include? mode
-        user ||= OSU.user maybe_mode + name
+        mode = Osu::API::MODE.find { |sym| event.message.content.include? "ccr.#{sym}" }
+        user   = OSU.user name, mode
         next '`user not found`' unless user
         event.channel.send_embed(
           "`user info:` **#{user.name}**",
