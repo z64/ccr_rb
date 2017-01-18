@@ -5,7 +5,7 @@ module Bot
 
       command(:user,
               description: 'shows you information about a user',
-              usage: 'ccr username',
+              usage: 'ccr.user [standard, ctb, taiko, mania] username',
               min_args: 1) do |event, maybe_mode, *name|
         name = name.join ' '
         mode = maybe_mode.to_sym
