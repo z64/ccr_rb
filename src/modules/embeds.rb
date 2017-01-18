@@ -55,7 +55,7 @@ module Bot
         events = user.events.map do |ev|
           html = ev.display_html
           html.gsub!('/b/', "#{Osu::API::BASE_URL}/b/")
-          html.gsub! user.name, "▫️️`#{ev.date}`"
+          html.gsub! user.name, "▫️️`#{ev.date.strftime('[%m-%d] %H:%M')}`"
           Upmark.convert html
         end
         e.add_field(
