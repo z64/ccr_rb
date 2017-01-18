@@ -23,7 +23,8 @@ module Bot
         url: user.profile_url,
         footer: VERSION_FOOTER,
         timestamp: Time.now,
-        color: 0xFF69B4
+        color: 0xFF69B4,
+        description: "Stats for game mode: `#{user.mode}`"
       )
 
       e.add_field(
