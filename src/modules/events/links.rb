@@ -51,10 +51,19 @@ module Bot
 
         next unless set
 
-        event.channel.send_embed(
-          "`beatmap set info:` **#{set.artist} - #{set.title}**",
-          Embeds.beatmap_set_embed(set)
-        )
+        if set.maps.count == 1
+          beatmap = set.maps.first
+
+          event.channel.send_embed(
+            "`beatmap info:` **#{beatmap.artist} - #{beatmap.title}** (#{beatmap.version})",
+            Embeds.beatmap_embed(beatmap)
+          )
+        else
+          event.channel.send_embed(
+            "`beatmap set info:` **#{set.artist} - #{set.title}**",
+            Embeds.beatmap_set_embed(set)
+          )
+        end
       end
 
       module_function
