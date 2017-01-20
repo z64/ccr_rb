@@ -127,9 +127,14 @@ module Bot
         data
       )
 
+      map_strings = set.maps.map do |m|
+        length = Time.at(m.total_length).strftime "%M:%S"
+        "▫️[#{m.version}](#{m.url}) (diff: **#{m.difficulty[:overall]}** / combo: **#{m.max_combo}** / `#{length}`)"
+      end
+
       e.add_field(
         name: 'Maps in this set',
-        value: set.maps.map { |m| "▫️[#{m.version}](#{m.url}) (diff: **#{m.difficulty[:overall]}**)"}.join("\n")
+        value: map_strings.join("\n")
       )
 
       e
