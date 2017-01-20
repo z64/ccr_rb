@@ -114,5 +114,25 @@ module Bot
 
       e
     end
+
+    def beatmap_set_embed(set)
+      e = Discordrb::Webhooks::Embed.new(
+        author: { name: 'View Beatmap Set', icon_url: OSU_ICON },
+        url: set.url,
+        footer: VERSION_FOOTER,
+        timestamp: Time.now,
+        color: 0xFF69B4,
+        description: <<~data
+          Mapped by: **#{set.creator}** `[#{set.mode} | #{set.approval}]`
+        data
+      )
+
+      e.add_field(
+        name: 'Maps in this set',
+        value: set.maps.map { |m| "▫️[#{m.version}](#{m.url}) (diff: **#{m.difficulty[:overall]}**)"}.join("\n")
+      )
+
+      e
+    end
   end
 end
