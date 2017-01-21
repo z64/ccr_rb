@@ -44,7 +44,26 @@ module Bot
 
       # Beatmap set link
       message(contains: LINKS[:beatmap_set]) do |event|
-        puts 'beatmap_set link posted'
+        urls = URI.extract event.message.content
+        id = extract_id urls.find { |u| LINKS[:beatmap_set] =~ u }
+
+        set = OSU.beatmap_set id
+
+        next unless set
+
+        if set.maps.count == 1
+          beatmap = set.maps.first
+
+          event.channel.send_embed(
+            "`beatmap info:` **#{beatmap.artist} - #{beatmap.title}** (#{beatmap.version})",
+            Embeds.beatmap_embed(beatmap)
+          )
+        else
+          event.channel.send_embed(
+            "`beatmap set info:` **#{set.artist} - #{set.title}**",
+            Embeds.beatmap_set_embed(set)
+          )
+        end
       end
 
       module_function
