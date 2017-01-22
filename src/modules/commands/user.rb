@@ -16,6 +16,24 @@ module Bot
           Embeds.user_embed(user)
         )
       end
+
+      command(:ranks,
+              description: 'shows you ranks in each game mode',
+              usage: 'ccr.ranks username',
+              min_args: 1) do |event, *name|
+        name = name.join ' '
+        stats = {}
+        Osu::API::MODE.each do |mode|
+          stats[mode] = OSU.user name, mode
+          break if stats[mode].nil?
+        end
+        stats.compact!
+        next '`user not found`' if stats.empty?
+        event.channel.send_embed(
+          "`user ranks:` **#{stats.values.first.name}**",
+          Embeds.ranks_embed(stats)
+        )
+      end
     end
   end
 end
