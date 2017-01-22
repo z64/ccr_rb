@@ -27,8 +27,8 @@ module Bot
           stats[mode] = OSU.user name, mode
           break if stats[mode].nil?
         end
-        stats.compact!
         next '`user not found`' if stats.empty?
+        stats.delete_if { |_, v| v.pp_rank.zero? }
         event.channel.send_embed(
           "`user ranks:` **#{stats.values.first.name}**",
           Embeds.ranks_embed(stats)
