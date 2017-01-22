@@ -67,6 +67,25 @@ module Bot
       e
     end
 
+    def ranks_embed(stats)
+      e = Discordrb::Webhooks::Embed.new(
+        author: { name: 'View Profile', icon_url: OSU_ICON },
+        url: stats.values.first.profile_url,
+        footer: VERSION_FOOTER,
+        timestamp: Time.now,
+        color: 0xFF69B4
+      )
+
+      data = stats.keys.map do |mode|
+        user = stats[mode]
+        "**#{mode}:** #{user.pp_rank.to_cspv} (`#{user.pp_raw.round(2)}`)"
+      end.join("\n")
+
+      e.description = data
+
+      e
+    end
+
     def beatmap_embed(beatmap)
       e = Discordrb::Webhooks::Embed.new(
         author: { name: 'View Beatmap', icon_url: OSU_ICON },
