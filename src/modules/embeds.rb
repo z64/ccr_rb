@@ -48,19 +48,6 @@ module Bot
         e.add_field score_field("Best #{user.mode.capitalize} Score", beatmap, score)
       end
 
-      if user.events.any?
-        events = user.events.map do |ev|
-          html = ev.display_html
-          html.gsub!('/b/', "#{Osu::API::BASE_URL}/b/")
-          html.gsub! user.name, "▫️️`#{ev.date.strftime('[%m-%d] %H:%M')}`"
-          Upmark.convert html
-        end
-        e.add_field(
-          name: 'Events',
-          value: events.take(3).join("\n")
-        )
-      end
-
       e
     end
 
