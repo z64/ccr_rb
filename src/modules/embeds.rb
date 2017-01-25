@@ -41,6 +41,13 @@ module Bot
         data
       )
 
+      score = OSU.user_score(user.name).first
+      beatmap = OSU.beatmap(score.beatmap_id)
+
+      if score && beatmap
+        e.add_field score_field("Best #{user.mode.capitalize} Score", beatmap, score)
+      end
+
       if user.events.any?
         events = user.events.map do |ev|
           html = ev.display_html
@@ -55,6 +62,18 @@ module Bot
       end
 
       e
+    end
+
+    def score_field(name = "\u200B", beatmap, score)
+      Discordrb::Webhooks::EmbedField.new(
+        name: name,
+        value: <<~data
+          **[#{beatmap.artist} - #{beatmap.title} (#{beatmap.version})](#{beatmap.url})**
+          Rank: ***#{score.rank}*** / Combo: **#{score.max_combo}** (max: #{beatmap.max_combo}) / `#{score.pp} PP`
+          Score: `#{score.score.to_cspv}`
+          Mods: #{score.mods(true).join(', ')}
+        data
+      )
     end
 
     def ranks_embed(stats)
