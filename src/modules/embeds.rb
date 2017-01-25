@@ -51,16 +51,17 @@ module Bot
       e
     end
 
-    def score_field(name = "\u200B", beatmap, score)
-      Discordrb::Webhooks::EmbedField.new(
-        name: name,
-        value: <<~data
-          **[#{beatmap.artist} - #{beatmap.title} (#{beatmap.version})](#{beatmap.url})**
-          Rank: ***#{score.rank}*** / Combo: **#{score.max_combo}** (max: #{beatmap.max_combo}) / `#{score.pp} PP`
-          Score: `#{score.score.to_cspv}`
-          Mods: #{score.mods(true).join(', ')}
-        data
-      )
+    def score_field(name = "\u200B", beatmap, score, user: nil)
+      data = <<~data
+        **[#{beatmap.artist} - #{beatmap.title} (#{beatmap.version})](#{beatmap.url})**
+        Rank: ***#{score.rank}*** / Combo: **#{score.max_combo}** (max: #{beatmap.max_combo}) / `#{score.pp} PP`
+        Score: `#{score.score.to_cspv}`
+        Mods: #{score.mods(true).join(', ')}
+      data
+
+      data += "[[View Profile]](#{user.profile_url})" if user
+
+      Discordrb::Webhooks::EmbedField.new(name: name, value: data)
     end
 
     def ranks_embed(stats)
@@ -119,6 +120,13 @@ module Bot
           Favorited by **#{beatmap.favourite_count.to_cspv}** players
         data
       )
+
+      score = OSU.beatmap_score(beatmap.id, mode: beatmap.mode)&.first
+      user = OSU.user(score.username)
+
+      if score && user
+        e.add_field score_field("Top Score [#{user.name}]", beatmap, score, user: user)
+      end
 
       # if beatmap.tags
       #  e.add_field(
