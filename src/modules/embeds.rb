@@ -41,8 +41,8 @@ module Bot
         data
       )
 
-      score = OSU.user_score(user.name, mode: user.mode).first
-      beatmap = OSU.beatmap(score.beatmap_id)
+      score = OSU.user_score(user.name, mode: user.mode)&.first
+      beatmap = OSU.beatmap(score.beatmap_id) if score
 
       if score && beatmap
         e.add_field score_field("Best #{user.mode.capitalize} Score", beatmap, score)
