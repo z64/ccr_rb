@@ -30,7 +30,7 @@ module Bot
       e.add_field(
         name: 'Stats',
         value: <<~data
-          **PP Rank:** #{user.pp_rank.to_cspv} (`#{user.pp_raw.round(2)}`) / **Country (#{user.country}):** #{user.pp_country_rank.to_cspv}
+          **PP Rank:** #{user.pp_rank.to_cspv} (`#{user.pp_raw.round(2)} PP`) / **Country (#{user.country}):** #{user.pp_country_rank.to_cspv}
           **SS** `x#{user.count_rank[:ss]}` / **S** `x#{user.count_rank[:s]}` / **A** `x#{user.count_rank[:a]}`
 
           **Accuracy:** `#{user.accuracy.round(2)}%`
