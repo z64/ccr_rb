@@ -7,6 +7,7 @@ module Bot
               description: 'shows you information about a user',
               usage: 'ccr.user [standard, ctb, taiko, mania] username',
               min_args: 1) do |event, *name|
+        event.channel.start_typing
         name = name.join ' '
         mode = Osu::API::MODE.find { |sym| event.message.content.include? "ccr.#{sym}" }
         user   = OSU.user name, mode
@@ -21,6 +22,7 @@ module Bot
               description: 'shows you recent events on a user\'s profile',
               usage: 'ccr.events username',
               min_args: 1) do |event, *name|
+        event.channel.start_typing
         name = name.join ' '
         user = OSU.user name, event_days: 7
         next '`user not found`' unless user
@@ -50,6 +52,7 @@ module Bot
               description: 'shows you ranks in each game mode',
               usage: 'ccr.ranks username',
               min_args: 1) do |event, *name|
+        event.channel.start_typing
         name = name.join ' '
         stats = {}
         Osu::API::MODE.each do |mode|

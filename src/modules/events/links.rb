@@ -14,6 +14,7 @@ module Bot
 
       # Player profile link
       message(contains: LINKS[:user]) do |event|
+        event.channel.start_typing
         urls = URI.extract event.message.content
         id = extract_id urls.find { |u| LINKS[:user] =~ u }
 
@@ -29,6 +30,7 @@ module Bot
 
       # Beatmap link
       message(contains: LINKS[:beatmap]) do |event|
+        event.channel.start_typing
         urls = URI.extract event.message.content
         id = extract_id urls.find { |u| LINKS[:beatmap] =~ u }
 
@@ -44,6 +46,7 @@ module Bot
 
       # Beatmap set link
       message(contains: LINKS[:beatmap_set]) do |event|
+        event.channel.start_typing
         urls = URI.extract event.message.content
         id = extract_id urls.find { |u| LINKS[:beatmap_set] =~ u }
 
