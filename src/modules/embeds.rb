@@ -125,7 +125,7 @@ module Bot
       user = OSU.user(score.username)
 
       if score && user
-        e.add_field score_field("Top Score [#{user.name}]", beatmap, score, user: user)
+        e.add_field score_field("Top Score: #{user.name}", beatmap, score, user: user)
       end
 
       # if beatmap.tags
