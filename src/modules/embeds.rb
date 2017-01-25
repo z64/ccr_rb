@@ -37,7 +37,7 @@ module Bot
           300 `x#{user.count300.to_cspv}` / 100 `x#{user.count100.to_cspv}` / 50 `x#{user.count50.to_cspv}`
 
           **Level #{user.level.round(2)}**
-          **Total:** #{user.total_score.to_cspv} / **Ranked:** #{user.ranked_score.to_cspv}
+          **Total Score:** #{user.total_score.to_cspv} / **Ranked:** #{user.ranked_score.to_cspv}
         data
       )
 
