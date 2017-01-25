@@ -41,7 +41,7 @@ module Bot
         data
       )
 
-      score = OSU.user_score(user.name).first
+      score = OSU.user_score(user.name, mode: user.mode).first
       beatmap = OSU.beatmap(score.beatmap_id)
 
       if score && beatmap
