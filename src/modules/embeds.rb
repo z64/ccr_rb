@@ -28,43 +28,40 @@ module Bot
       )
 
       e.add_field(
-        name: 'Ranks',
+        name: 'Stats',
         value: <<~data
           **PP Rank:** #{user.pp_rank.to_cspv} (`#{user.pp_raw.round(2)}`) / **Country (#{user.country}):** #{user.pp_country_rank.to_cspv}
           **SS** `x#{user.count_rank[:ss]}` / **S** `x#{user.count_rank[:s]}` / **A** `x#{user.count_rank[:a]}`
-        data
-      )
 
-      e.add_field(
-        name: 'Hits',
-        value: <<~data
           **Accuracy:** `#{user.accuracy.round(2)}%`
           300 `x#{user.count300.to_cspv}` / 100 `x#{user.count100.to_cspv}` / 50 `x#{user.count50.to_cspv}`
-        data
-      )
 
-      e.add_field(
-        name: 'Score',
-        value: <<~data
           **Level #{user.level.round(2)}**
-          **Total:** #{user.total_score.to_cspv} / **Ranked:** #{user.ranked_score.to_cspv}
+          **Total Score:** #{user.total_score.to_cspv} / **Ranked:** #{user.ranked_score.to_cspv}
         data
       )
 
-      if user.events.any?
-        events = user.events.map do |ev|
-          html = ev.display_html
-          html.gsub!('/b/', "#{Osu::API::BASE_URL}/b/")
-          html.gsub! user.name, "▫️️`#{ev.date.strftime('[%m-%d] %H:%M')}`"
-          Upmark.convert html
-        end
-        e.add_field(
-          name: 'Events',
-          value: events.take(3).join("\n")
-        )
+      score = OSU.user_score(user.name, mode: user.mode)&.first
+      beatmap = OSU.beatmap(score.beatmap_id) if score
+
+      if score && beatmap
+        e.add_field score_field("Best #{user.mode.capitalize} Score", beatmap, score)
       end
 
       e
+    end
+
+    def score_field(name = "\u200B", beatmap, score, user: nil)
+      data = <<~data
+        **[#{beatmap.artist} - #{beatmap.title} (#{beatmap.version})](#{beatmap.url})**
+        Rank: ***#{score.rank}*** / Combo: **#{score.max_combo}** (max: #{beatmap.max_combo}) / `#{score.pp} PP`
+        Score: `#{score.score.to_cspv}`
+        Mods: #{score.mods(true).join(', ')}
+      data
+
+      data += "[[View Profile]](#{user.profile_url})" if user
+
+      Discordrb::Webhooks::EmbedField.new(name: name, value: data)
     end
 
     def ranks_embed(stats)
@@ -123,6 +120,13 @@ module Bot
           Favorited by **#{beatmap.favourite_count.to_cspv}** players
         data
       )
+
+      score = OSU.beatmap_score(beatmap.id, mode: beatmap.mode)&.first
+      user = OSU.user(score.username)
+
+      if score && user
+        e.add_field score_field("Top Score: #{user.name}", beatmap, score, user: user)
+      end
 
       # if beatmap.tags
       #  e.add_field(
